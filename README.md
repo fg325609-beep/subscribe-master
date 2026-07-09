@@ -1,36 +1,78 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SubScribe Master — Frontend
 
-## Getting Started
+Foydalanuvchining pullik obunalarini boshqaruvchi, valyuta konvertatsiyasi va
+xarajatlar statistikasini taqdim etuvchi Next.js (App Router) SPA.
 
-First, run the development server:
+## Texnologiyalar
 
-```bash
+- Next.js 14+ (App Router), TypeScript
+- Tailwind CSS
+- Zustand (global state)
+- Axios + interceptor (JWT access/refresh token oqimi)
+- React Hook Form + Zod (validatsiya)
+- Recharts (grafiklar)
+- MSW (backend mock uchun)
+- Vitest + Testing Library (unit testlar)
+
+## Ishga tushirish
+
+### 1. Talablar
+- Node.js 20+
+- npm 10+
+
+### 2. O'rnatish
+\`\`\`bash
+npm install
+\`\`\`
+
+### 3. Environment o'zgaruvchilari
+\`.env.local.example\` faylidan nusxa oling:
+\`\`\`bash
+cp .env.local.example .env.local
+\`\`\`
+
+| O'zgaruvchi | Tavsif | Default |
+|---|---|---|
+| `NEXT_PUBLIC_API_BASE_URL` | Backend API manzili | `http://localhost:4000/api` |
+
+### 4. Development rejimida ishga tushirish
+\`\`\`bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+\`\`\`
+Brauzerda oching: http://localhost:3000
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 5. Testlarni ishga tushirish
+\`\`\`bash
+npm run test
+\`\`\`
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 6. Production build (Docker orqali)
+\`\`\`bash
+docker compose up --build
+\`\`\`
+Ilova http://localhost:3000 manzilida ochiladi (ichkarida Nginx portida 80).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Token xavfsizligi haqida izoh
 
-## Learn More
+Access token faqat brauzer xotirasida (Zustand, persist qilinmagan) saqlanadi —
+sahifa yangilanganda yo'qoladi va `/auth/me` orqali qayta tiklanadi.
+Refresh token — agar backend qo'llasa — **httpOnly cookie**da saqlanadi va
+frontend unga umuman tegmaydi (XSS'dan himoyalangan). Agar backend cookie'ni
+qo'llamasa, fallback sifatida refresh token localStorage'da saqlanishi mumkin,
+biroq bu holat XSS xavfini oshiradi va faqat backend cookie imkoniyati
+bo'lmagan taqdirda ishlatilishi tavsiya etiladi.
 
-To learn more about Next.js, take a look at the following resources:
+## Loyiha strukturasi
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Qisqacha: `app/` — route'lar, `components/ui` — qayta ishlatiladigan "dumb"
+komponentlar, `features/` — domen bo'yicha modullar (auth, subscriptions,
+analytics, notifications, reports, admin, settings), `services/` — API bilan
+aloqa, `store/` — Zustand global holat, `types/` — TypeScript interfeyslar.
+Batafsil arxitektura tavsifi loyiha ichidagi texnik hujjatda keltirilgan.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Ma'lum cheklovlar
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `output: "export"` statik export ishlatilgani sababli, kelajakda Server
+  Actions yoki server-side render kerak bo'lsa, Dockerfile va
+  `next.config.mjs` moslashtirilishi kerak.
+- Admin panel funksiyalari backend'da `ADMIN` roli mavjudligiga bog'liq.# subscribe-master
