@@ -1,0 +1,1 @@
+export { settingsService } from "@/features/settings/service";
