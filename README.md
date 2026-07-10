@@ -76,3 +76,4 @@ Batafsil arxitektura tavsifi loyiha ichidagi texnik hujjatda keltirilgan.
   Actions yoki server-side render kerak bo'lsa, Dockerfile va
   `next.config.mjs` moslashtirilishi kerak.
 - Admin panel funksiyalari backend'da `ADMIN` roli mavjudligiga bog'liq.# subscribe-master
+# subscribe-master
