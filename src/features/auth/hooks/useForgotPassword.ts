@@ -13,13 +13,10 @@ export function useForgotPassword() {
         setIsLoading( true );
         setError( null );
         try {
-            // Real email yuborilmasa ham, frontend oqimi tayyor bo'lishi kerak (vazifa talabi)
             await apiClient.post( "/auth/forgot-password", { email } );
             setIsSuccess( true );
         } catch {
-            // Xavfsizlik nuqtai nazaridan: email mavjudligi/yo'qligini oshkor qilmaymiz,
-            // har doim muvaffaqiyatli javob ko'rsatamiz (enumeration attack'dan himoya)
-            setIsSuccess( true );
+            setError( "Xat yuborishda xatolik yuz berdi. Iltimos, qayta urinib ko'ring." );
         } finally {
             setIsLoading( false );
         }
