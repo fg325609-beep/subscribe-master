@@ -36,6 +36,10 @@ export const handlers = [
     return HttpResponse.json(mockUser);
   }),
 
+  http.post(`${API_BASE_URL}/auth/logout`, () => {
+    return HttpResponse.json({ message: "Logged out successfully" });
+  }),
+
   http.post(`${API_BASE_URL}/auth/refresh`, () => {
     return HttpResponse.json({ accessToken: "mock_refreshed_token" });
   }),
